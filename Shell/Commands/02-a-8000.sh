@@ -3,5 +3,5 @@
 mkdir ~/myetc;
 find /etc/ -perm -444 -exec cp -r {} myetc/ \; # better more optimal copies one by one
 # OR
-cp -r $(find /etc/ -perm -444) ~/myetc^C #doesnt copy one by one problem with large files and file names containg spaces
+cp -r $(find /etc/ -perm -444) ~/myetc #doesnt copy one by one problem with large files and file names containg spaces
 
