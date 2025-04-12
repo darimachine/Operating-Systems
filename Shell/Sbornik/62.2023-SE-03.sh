@@ -21,12 +21,11 @@ while read -r file; do
 done< <(find ${1} -type f -name "*.txt")
 cat ${wordCountFile} | sort | uniq -c | sort -nr | awk -v minFile=${fileCount} '$1 >minFile/2 {print $2}' | head -n 10 >>${stopWordsFinal}
 
-cat ${allWordCount} | sort | uniq -c | sort -nr > ${allWordCount}
 result=$(mktemp)
 cat ${allWordCount}
 while read -r word; do
     #echo "${word}"
-    cat ${allWordCount} | grep -E "\b${word}\b" | tr -s ' ' | sed -E "s:^ ::g" >>${result}
+    cat ${allWordCount} | sort | uniq -c | sort -nr | grep -E "\b${word}\b" | tr -s ' ' | sed -E "s:^ ::g" >>${result}
 done < <(cat ${stopWordsFinal})
 echo "---------------------------------------------------------------"
 #echo "Filecount: $fileCount"
