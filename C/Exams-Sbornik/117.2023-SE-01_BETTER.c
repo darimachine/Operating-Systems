@@ -120,6 +120,7 @@ int main(int argc, char* argv[]) {
             //printf("%s\n",fileName);//DEBUG
             int pid2 = wrapper_fork();
             if(pid2==0) {
+                close(pf[0]);
                 handleSingleFile(fileName);
                 exit(0);
             }
