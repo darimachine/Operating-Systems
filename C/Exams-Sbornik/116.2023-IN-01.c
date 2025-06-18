@@ -38,13 +38,6 @@ int wrapper_write(int fd, const void * buff, int size) {
     }
     return w;
 }
-int wrapper_dup2(int old, int new) {
-    int d = dup2(old,new);
-    if(d<0) {
-        err(5,"Error dup2");
-    }
-    return d;
-}
 
 pid_t wrapper_fork(void) {
     pid_t pid = fork();
@@ -70,25 +63,21 @@ void closePipes(int write, int read) {
 }
 void runChild(int next) {
     
-    closePipes((next+1)%(nc+1),next);
+    closePipes((next+1)%(nc+1),next); // modul because i use this function on the parrent as well
     
     int idx;
     while(wrapper_read(pipes[next][0],&idx,sizeof(idx))==sizeof(idx)) {
 
         if(idx>=wc) {
-            //DONT UNCOMMENT BUG SIGPIPE HERE FOR TESTING ONLY!!!
-            //close(pipes[number][0]);
-            //wrapper_write(pipes[(number+1)%(nc+1)][1],&idx,sizeof(idx))
-            //close(pipes[(number+1)%(nc+1)][1]);
             break;
         }
 
         wrapper_write(1,words[idx%3],4);
         idx++;
-        wrapper_write(pipes[(next+1) %(nc+1)][1],&idx,sizeof(idx));
+        wrapper_write(pipes[(next+1) %(nc+1)][1],&idx,sizeof(idx)); // modul because i use this function on the parrent as well
     }
     close(pipes[next][0]);
-    close(pipes[(next+1)%(nc+1)][1]);
+    close(pipes[(next+1)%(nc+1)][1]); // modul % because i use this function on the parrent as well
 }
         
 int main(int argc, char* argv[]) {
@@ -117,7 +106,6 @@ int main(int argc, char* argv[]) {
         }
     }
     
-    
     int idx=0;
     wrapper_write(1,words[idx],4);
     idx++;
@@ -127,7 +115,5 @@ int main(int argc, char* argv[]) {
     for(int j=0; j<nc; j++) {
         wrapper_wait();
     }
-
-
 }
 

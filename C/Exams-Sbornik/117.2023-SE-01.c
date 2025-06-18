@@ -115,6 +115,7 @@ int main(int argc, char* argv[]) {
                 err(131,"Error forking");
             }
             if(pid3==0) {
+                close(p1[0]);
                 createFile(buffer);
                 exit(0);
             }
