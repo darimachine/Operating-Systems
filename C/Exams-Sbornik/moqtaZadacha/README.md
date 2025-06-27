@@ -33,7 +33,7 @@
 ```bash
 Program <име> Started: YYYY-MM-DD HH:MM:SS Ended: YYYY-MM-DD HH:MM:SS <резултат>
 ```
-
+Където `YYYY-MM-DD HH:MM:SS` е дата и час на стартиране на процеса и на завършване
 Където `<резултат>` е:
 
 - `without timeout!!` – при нормален завършек (статус 0)
